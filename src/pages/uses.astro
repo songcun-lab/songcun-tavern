@@ -1,52 +1,62 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/utils';
+
+const updated = '2026 年 7 月';
 
 const sections = [
   {
     title: '对话与研究',
     items: [
-      { name: 'ChatGPT', note: '最早的入口，日常对话、思路梳理的主力。' },
-      { name: 'Claude', note: '长文写作和深度分析首选，文字质感最好。' },
-      { name: 'Gemini', note: '多模态和长上下文场景的补充。' },
-      { name: 'Kimi', note: '中文资料检索和长文档阅读。' },
+      { name: 'ChatGPT', freq: '每天', note: '最早的入口，日常对话、快速问答、思路梳理的主力。它是我 AI 之路的起点，感情分永远在。' },
+      { name: 'Claude', freq: '每天', note: '长文写作和深度分析首选，文字质感最好。写正式材料、行业分析基本都靠它。' },
+      { name: 'Gemini', freq: '每周', note: '多模态和超长上下文场景的补充，读大 PDF 和视频总结时用。' },
+      { name: 'Kimi', freq: '每周', note: '中文资料检索和长文档阅读，中文语料的理解有独到之处。' },
     ],
   },
   {
     title: 'AI 编程',
     items: [
-      { name: 'Claude Code', note: '我的主力编程 Agent，从它开始学会了氛围编程。' },
-      { name: 'Codex', note: '与 Claude Code 互为备份，各有擅长。' },
-      { name: 'Cursor', note: '需要在 IDE 里精细改代码时用。' },
-      { name: 'VS Code + WSL', note: '基础开发环境，Windows 下跑 Linux 工具链。' },
+      { name: 'Claude Code', freq: '每天', note: '主力编程 Agent。从它开始学会氛围编程，公司官网、这个小酒馆的日常维护都靠它。对非科班的人极其友好。' },
+      { name: 'Codex', freq: '每周', note: '与 Claude Code 互为备份：跑批量任务、需要第二意见时切换过来。' },
+      { name: 'Cursor', freq: '偶尔', note: '需要在 IDE 里精细改几行代码时用，重活还是交给 Agent。' },
+      { name: 'VS Code + WSL', freq: '每天', note: '基础环境。Windows 下跑 Linux 工具链，中年人学 AI 的第一道坎就是这套环境，跨过去海阔天空。' },
     ],
   },
   {
     title: 'Agent 与自动化',
     items: [
-      { name: 'Manus', note: '复杂任务的通用 Agent：研究报告、网站、材料一站式完成。' },
-      { name: 'Cowork', note: '多 Agent 协作的探索。' },
-      { name: 'Skills / MCP', note: '把能力封装成可复用单元，是我最近研究的重点。' },
+      { name: 'Manus', freq: '每周', note: '复杂任务的通用 Agent：行业研究、建网站、做材料一站式完成。这个网站的 V1 和 V2 都是和它协作的产物。' },
+      { name: 'Cowork', freq: '探索中', note: '多 Agent 协作的试验田，还在摸它的边界。' },
+      { name: 'Skills / MCP', freq: '研究重点', note: '把能力封装成可复用单元。我判断这是 Agent 生态下一阶段的关键抽象，正从「收集」转向「自建」。' },
     ],
   },
   {
     title: '知识管理',
     items: [
-      { name: 'Obsidian', note: '第二大脑。按「资料原文—加工输出—沉淀知识」组织。' },
-      { name: 'GitHub', note: '所有学习成果的公开沉淀地，Songcun Lab 的家。' },
-      { name: 'YouMind', note: '素材收集和内容创作的中转站。' },
+      { name: 'Obsidian', freq: '每天', note: '第二大脑。按「资料原文—加工输出—沉淀知识」三层组织，与 GitHub 私有仓库同步，笔记从此有版本历史。' },
+      { name: 'GitHub', freq: '每天', note: '所有学习成果的公开沉淀地，Songcun Lab 41 个仓库的家。对我而言它不是代码托管，是知识账本。' },
+      { name: 'YouMind', freq: '每周', note: '素材收集和内容创作的中转站，采集到加工的第一站。' },
     ],
   },
   {
     title: '内容与设计',
     items: [
-      { name: 'Lovart', note: '视觉设计的 AI 助手，海报、配图、品牌物料。' },
-      { name: '小红书 / 朋友圈', note: '每天一篇学习感悟的输出阵地，坚持一年多。' },
+      { name: 'Lovart', freq: '每周', note: '视觉设计的 AI 助手：海报、配图、品牌物料。给它的提示词我单独建了一个库（lovart-prompt-library）。' },
+      { name: '小红书 / 朋友圈', freq: '每天', note: '每天一篇学习感悟的输出阵地，一年多没断更。输出倒逼输入，是我坚持最久的学习方法。' },
     ],
   },
 ];
+
+// 用过但退役的工具——诚实记录
+const retired = [
+  { name: '各类 AI 搜索套壳', reason: '新鲜感过后发现，不如直接问大模型 + 自己核实来源。' },
+  { name: '若干笔记类 AI 应用', reason: '功能花哨但沉淀不下来，最后都回到了 Obsidian + GitHub 的朴素组合。' },
+  { name: '部分低代码建站平台', reason: '学会 AI 编程之后，直接写代码反而更快、更可控、零月费。' },
+];
 ---
 
-<BaseLayout title="我的 AI 工具箱" description="宋村博士的 Uses 页面：一个非科班中年人日常使用的 AI 工具清单与真实评价。">
+<BaseLayout title="我的 AI 工具箱" description="宋村博士的 Uses 页面：一个非科班中年人日常使用的 AI 工具清单、使用频率与真实评价，包括退役工具名单。">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
     <header class="mb-10">
       <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
@@ -57,7 +67,10 @@ const sections = [
       </h1>
       <p class="text-sm leading-relaxed opacity-70 max-w-lg" style="color: var(--color-text-muted);">
         这些是我每天真实在用的工具。没有赞助，没有推广，只有一个重度用户的诚实评价。
-        工具会换，但「把 AI 变成稳定工作流」这件事不会变。
+        每个工具标注了真实使用频率——工具会换，但「把 AI 变成稳定工作流」这件事不会变。
+      </p>
+      <p class="mt-3 text-xs opacity-50" style="color: var(--color-text-muted);">
+        更新于 {updated} · 完整的折腾史见<a href={url('/blog/ai-tools-what-remained')} class="hover:underline" style="color: var(--color-accent);">《我折腾过这么多 AI 工具，最后留下了什么》</a>
       </p>
     </header>
 
@@ -71,10 +84,12 @@ const sections = [
           <dl class="space-y-3">
             {section.items.map(item => (
               <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                <dt class="font-medium text-sm shrink-0 sm:w-36" style="color: var(--color-accent);">
+                <dt class="font-medium text-sm shrink-0 sm:w-36 flex items-baseline gap-2" style="color: var(--color-accent);">
                   {item.name}
                 </dt>
-                <dd class="text-sm opacity-75 leading-relaxed" style="color: var(--color-text-muted);">
+                <dd class="text-sm opacity-75 leading-relaxed flex-1" style="color: var(--color-text-muted);">
+                  <span class="inline-block text-[10px] px-1.5 py-0.5 mr-1.5 rounded border opacity-70 align-middle"
+                        style="border-color: var(--color-border); color: var(--color-text-muted);">{item.freq}</span>
                   {item.note}
                 </dd>
               </div>
@@ -82,6 +97,42 @@ const sections = [
           </dl>
         </section>
       ))}
+
+      <!-- 一条典型工作流 -->
+      <section>
+        <h2 class="text-lg font-semibold mb-4 pb-2 border-b"
+            style="color: var(--color-text); font-family: var(--font-serif); border-color: var(--color-border);">
+          一条典型的内容工作流
+        </h2>
+        <p class="text-sm leading-loose opacity-75" style="color: var(--color-text-muted);">
+          灵感（朋友圈碎片）→ YouMind 收集素材 → Claude 深度成文 → Obsidian 归档
+          → 小酒馆发布（GitHub push 即上线）→ 小红书 / 朋友圈分发。
+          六步走完，一篇内容同时完成了发表和沉淀——这是我折腾一年多之后收敛出的最短路径。
+        </p>
+      </section>
+
+      <!-- 退役名单 -->
+      <section>
+        <h2 class="text-lg font-semibold mb-4 pb-2 border-b"
+            style="color: var(--color-text); font-family: var(--font-serif); border-color: var(--color-border);">
+          退役名单
+        </h2>
+        <p class="text-xs opacity-50 mb-4" style="color: var(--color-text-muted);">
+          诚实起见，也列出用过但放弃的——退役原因往往比入选理由更有信息量。
+        </p>
+        <dl class="space-y-3">
+          {retired.map(item => (
+            <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+              <dt class="font-medium text-sm shrink-0 sm:w-36 line-through opacity-50" style="color: var(--color-text-muted);">
+                {item.name}
+              </dt>
+              <dd class="text-sm opacity-60 leading-relaxed" style="color: var(--color-text-muted);">
+                {item.reason}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
     </div>
 
     <p class="mt-14 text-center text-sm opacity-50 leading-loose" style="color: var(--color-text-muted); font-family: var(--font-serif);">

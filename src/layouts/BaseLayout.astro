@@ -20,6 +20,51 @@ const {
   publishedTime,
 } = Astro.props;
 
+// JSON-LD 结构化数据
+const personLd = {
+  '@type': 'Person',
+  name: '宋村',
+  alternateName: 'Dr. Songcun',
+  url: Astro.site?.toString(),
+  image: new URL(url('/images/songcun-portrait.jpg'), Astro.site).toString(),
+  jobTitle: 'AI 产品设计师 / 能源行业专家 / 工业抑尘创业者',
+  description: '管理学博士，能源煤炭行业二十余年，人到中场借 AI 重启人生。',
+  sameAs: [
+    'https://github.com/songcun-lab',
+    'https://www.youtube.com/@Dr.songcunSong',
+    'https://x.com/Mrsong94411422',
+    'https://www.xiaohongshu.com/user/profile/5e9e70d80000000001005a60',
+  ],
+};
+
+const jsonLd = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title,
+      description,
+      url: canonicalURLString(),
+      datePublished: publishedTime,
+      inLanguage: 'zh-CN',
+      image: new URL(ogImage, Astro.site).toString(),
+      author: personLd,
+      publisher: { '@type': 'Organization', name: '宋村清酒小酒馆', url: Astro.site?.toString() },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: '宋村清酒小酒馆',
+      alternateName: 'Songcun Tavern',
+      url: Astro.site?.toString(),
+      description,
+      inLanguage: 'zh-CN',
+      author: personLd,
+    };
+
+function canonicalURLString() {
+  return new URL(Astro.url.pathname, Astro.site).toString();
+}
+
 const siteTitle = title === '宋村清酒小酒馆' ? title : `${title} · 宋村清酒小酒馆`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -54,6 +99,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
     <meta name="twitter:site" content="@Mrsong94411422" />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />

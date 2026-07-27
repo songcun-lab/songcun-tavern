@@ -1,82 +1,196 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/utils';
 
-const phases = [
+// 数字年轮：基于 songcun-lab 41 个仓库的创建时间与 commit 级证据重建
+// 方法论：有 GitHub 证据的节点标注证据；GitHub 之前的节点诚实标注"时间待确认"
+const rings = [
   {
-    period: '第一阶段 · 把 AI 当强心剂',
-    time: '2024 下半年 — 2025 初',
-    body: '在人生最低谷的日子里遇到 ChatGPT。最初只是深夜睡不着时的对话对象，后来发现它真的能回答我的问题、陪我梳理思路。从"聊天"开始，慢慢把 ChatGPT、Claude、Kimi 用进了日常工作：写材料、做研究、整理行业信息。这个阶段的关键词是：使用。',
+    ring: '〇',
+    period: 'GitHub 之前',
+    time: '约 2024 底 — 2025（时间待确认）',
+    theme: '陪伴与好奇',
+    oneLiner: '深夜的 ChatGPT，先是对话者，后是工具。',
+    body: '人生中段的一次重大转折之后，深夜睡不着的日子里开始和 ChatGPT 长聊。最初的问题与技术无关；直到某天问了它一个煤炭行业的专业问题，发现它答得有模有样、也有几处错得离谱——那几处错误点燃了较真的欲望。之后开始每天在朋友圈输出 AI 学习感悟，一年多没断更。这段经历没有 GitHub 证据，具体起点时间待考。',
+    events: [],
     repos: [],
+    evidence: '本人自述，时间待确认',
   },
   {
-    period: '第二阶段 · 每天输出，建立习惯',
-    time: '2025',
-    body: '开始每天在朋友圈和小红书输出一篇 AI 学习感悟，一天没断过。不为流量，只为记录。输出倒逼输入——为了写清楚一个概念，就必须真正搞懂它。这一年从 Prompt 写法、工具对比，一路学到 Agent、RAG、MCP 这些底层概念。这个阶段的关键词是：坚持。',
-    repos: [],
+    ring: '一',
+    period: '2026 年 1 月',
+    time: '2026-01-14 — 01-26',
+    theme: '落户与架构',
+    oneLiner: '一周之内，建成个人知识仓库体系。',
+    body: '进入 GitHub 的第一个动作是 fork awesome-claude-skills 研究 Skill 生态。1 月 20 日晚建立组织主页，当晚 19:00 写下第一篇工具实测《Claude Code · First Impression》，19:10 完成 Claude Code 与 Gemini CLI 的对照实验。随后几天陆续建成：总入口（ai-skill-index）、学习账本（songcun-ledger）、工具实验室（lab-ai-tools）、叙事复盘（notes-ai-journey）、设计提示词库（lovart-prompt-library，单日 15 commits）。这不是程序员的仓库布局，是知识管理者的布局。',
+    events: [
+      { date: '01-14', text: 'fork awesome-claude-skills——进 GitHub 的第一个动作是研究 Skills' },
+      { date: '01-20 19:00', text: '第一篇工具实测《Claude Code · First Impression》入库' },
+      { date: '01-22', text: '学习主账本 songcun-ledger 建立，含 PowerShell/Linux 踩坑日志' },
+    ],
+    repos: ['ai-skill-index', 'lab-ai-tools', 'songcun-ledger', 'notes-ai-journey'],
+    evidence: '仓库创建时间 + commit 记录',
   },
   {
-    period: '第三阶段 · 从聊天到编程',
-    time: '2025 底 — 2026 初',
-    body: '第一次用 Claude Code 和 Codex 写代码，发现"氛围编程"（Vibe Coding）让一个非科班的人也能做出真正能跑的东西。注册了 GitHub 组织 Songcun Lab（栓柱 AI），开始把学习笔记、Prompt 库、Agent 实验放到公开仓库里。用 AI 给自己的创业公司做了官网。这个阶段的关键词是：动手。',
-    repos: ['notes-ai-journey', 'codex-notes', 'agent-skills'],
+    ring: '二',
+    period: '2026 年 2 月',
+    time: '2026-02-06 — 02-28',
+    theme: '提示词工程化',
+    oneLiner: '凌晨两小时，把 Prompt 变成模板资产。',
+    body: '2 月 6 日凌晨 04:40 到 06:50，两个小时内建成 codex-notes：debug 模板、refactor 模板、通用提示词模板、使用指南，连续 10 个 commit——散落在聊天记录里的提示词从此变成可复用的资产。同月 fork 了 Personal_AI_Infrastructure，「个人 AI 基础设施」这个概念正式进入视野；随后密集研究 pi-mono、nanobot、picoclaw 等轻量 Agent 实现。',
+    events: [
+      { date: '02-06 04:40', text: 'codex-notes 凌晨建库，两小时 10 commits' },
+      { date: '02-11', text: 'fork Personal_AI_Infrastructure——概念入视野' },
+      { date: '02-14~28', text: '密集 fork 五个轻量 Agent 框架，开始读源码' },
+    ],
+    repos: ['codex-notes', 'Personal_AI_Infrastructure', 'nanobot'],
+    evidence: 'commit 时间戳序列',
   },
   {
-    period: '第四阶段 · 搭建个人 AI 基础设施',
-    time: '2026 上半年',
-    body: '不再满足于零散地用工具，开始系统研究 Personal AI Infrastructure：研读 Claude Code 源码、拆解各家 AI 工具的系统提示词、跑通各种轻量 Agent 框架、用 Obsidian 搭建第二大脑，把 ChatGPT、Claude、Manus、Cowork 等工具串成稳定可复用的工作流。这个阶段的关键词是：体系。',
-    repos: ['Personal_AI_Infrastructure', 'learn-claude-code', 'second-brain', 'ai-skill-index'],
+    ring: '三',
+    period: '2026 年 3 月',
+    time: '2026-03-02 — 03-22',
+    theme: '第一次真实交付',
+    oneLiner: '一天半，用 AI 建成公司官网 V10。',
+    body: '3 月 9 日 14:17 创建禾净环保官网仓库（私有），一天半内从 bootstrap 到 V10，19 个 checkpoint commit——第一次用 AI 编程为自己的公司交付真实生产项目，省下数万元外包费。同月 fork vibe-coding-cn，"Vibe Coding"作为方法论被正式纳入；fork 一人企业方法论，创业与 AI 两条线开始交汇。',
+    events: [
+      { date: '03-09 14:17', text: '禾净官网开工，一天半 19 个 checkpoint 到 V10' },
+      { date: '03-18', text: 'fork learn-claude-code（"Bash is all you need"）' },
+      { date: '03-22', text: 'Vibe Coding 方法论正式纳入工具箱' },
+    ],
+    repos: ['vibe-coding-cn', 'learn-claude-code', 'one-person-businesses-methodology-v2.0'],
+    evidence: 'commit 序列（官网仓库为私有，不外链）',
   },
   {
-    period: '第五阶段 · AI × 工业 × 创业',
-    time: '2026 — 现在',
-    body: '把 AI 能力带回自己最熟悉的领域：能源、煤炭、智能矿山、工业环保。一边在工业软件企业做 ToB 市场，一边探索 AI 在工业场景的落地，一边研究一人公司方法论、Skill 生态和模型训练基础理论。AI 学习不再是逃避现实的出口，而成了连接过去二十年积累和未来十年可能性的桥。这个阶段的关键词是：融合。',
-    repos: ['one-person-businesses-methodology-v2.0', 'Illustrated-Agent-Skills', 'zhangxuefeng-skill'],
+    ring: '四',
+    period: '2026 年 4–5 月',
+    time: '2026-04-04 — 05-02',
+    theme: '第二大脑与工程纵深',
+    oneLiner: 'Obsidian 入 GitHub，学会 PR 工作流。',
+    body: '4 月 5 日建立 second-brain 私有仓库，Obsidian 第二大脑与 GitHub 版本管理正式打通——笔记从此有了历史。4 月 fork 可运行调试版 claude-code，从「用工具」进到「拆工具」。5 月 2 日给公司官网做 SEO 改造（robots/sitemap/JSON-LD），第一次用 Pull Request 工作流提交变更——一个非程序员开始按工程规范干活。',
+    events: [
+      { date: '04-05', text: 'second-brain 建库，Obsidian × GitHub 打通' },
+      { date: '04-04', text: 'fork claude-code 可调试版，开始拆解内部实现' },
+      { date: '05-02', text: '第一次 Pull Request：官网 SEO 改造（PR #1、#2）' },
+    ],
+    repos: ['claude-code', 'hermes-agent'],
+    evidence: '仓库创建时间 + PR 记录',
+  },
+  {
+    ring: '五',
+    period: '2026 年 6 月',
+    time: '2026-06-10 — 06-23',
+    theme: '治理与收口',
+    oneLiner: '22 分钟治理 5 个仓库，从囤积到秩序。',
+    body: '6 月 10 日，公司官网完成静态化改造并正式部署上线生产环境。6 月 22 日 18:18 到 18:40，22 分钟内连续治理 5 个仓库的 README：移除失效链接、对齐真实目录、标注归档建议。6 月 23 日把 my-project 改名为 songcun-ledger——命名体系成熟。知识管理的上半场是收集，下半场是治理；这个月完成了转场。',
+    events: [
+      { date: '06-10', text: '公司官网静态化上线生产环境（PR #3）' },
+      { date: '06-22 18:18', text: '22 分钟连续治理 5 个仓库 README' },
+      { date: '06-23', text: 'my-project 更名 songcun-ledger，命名收口' },
+    ],
+    repos: ['songcun-lab'],
+    evidence: 'commit 时间戳序列',
+  },
+  {
+    ring: '六',
+    period: '2026 年 7 月 — 现在',
+    time: '2026-07-27 起',
+    theme: '个人数字资产',
+    oneLiner: '小酒馆开张：内容成为长期资产。',
+    body: '7 月 27 日，宋村清酒小酒馆上线（Astro + Tailwind + GitHub Actions 自动部署），当天完成初版发布与 CI 打通。学 AI 一年多的所有沉淀——工作流、提示词库、知识账本、行业判断——开始通过这间酒馆变成可积累、可检索、可传承的数字资产。这一轮年轮还在生长。',
+    events: [
+      { date: '07-27', text: '小酒馆上线，push 即发布的内容流水线打通' },
+    ],
+    repos: ['songcun-tavern'],
+    evidence: 'commit 序列 + 你正在看的这个网站',
   },
 ];
 ---
 
-<BaseLayout title="AI 学习时间线" description="一个 48 岁非科班中年人的 AI 学习轨迹：从深夜和 ChatGPT 聊天，到搭建自己的个人 AI 基础设施。">
+<BaseLayout title="AI 数字年轮" description="一个 48 岁非科班中年人的 AI 学习轨迹，基于 GitHub 41 个仓库的 commit 级证据重建：从深夜与 ChatGPT 对话，到建成个人数字资产。">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
     <header class="mb-12">
       <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
-        AI Journey
+        AI Journey · Digital Growth Rings
       </p>
       <h1 class="text-3xl font-bold mb-4" style="color: var(--color-text); font-family: var(--font-serif);">
-        AI 学习时间线
+        AI 数字年轮
       </h1>
-      <p class="text-sm leading-relaxed opacity-70 max-w-lg" style="color: var(--color-text-muted);">
-        一个 48 岁、非计算机科班的中年人，是怎么一步一步学 AI 的。
-        这条时间线来自我的真实学习记录和
+      <p class="text-sm leading-relaxed opacity-70 max-w-xl" style="color: var(--color-text-muted);">
+        树的年轮记录气候，仓库的 commit 记录成长。下面的每一圈年轮，都基于
         <a href="https://github.com/songcun-lab" target="_blank" rel="noopener noreferrer"
-           class="hover:underline" style="color: var(--color-accent);">GitHub 提交轨迹</a>。
+           class="hover:underline" style="color: var(--color-accent);">songcun-lab</a>
+        全部 41 个仓库的创建时间与提交历史重建——有证据的节点标注证据来源，
+        没有证据的诚实写"时间待确认"，不凭感觉虚构。
       </p>
     </header>
 
-    <div class="space-y-10">
-      {phases.map((phase, i) => (
-        <section class="p-6 rounded-lg border" style="border-color: var(--color-border); background: var(--color-bg-secondary);">
-          <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
-            <h2 class="text-lg font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
-              {phase.period}
-            </h2>
-            <span class="text-xs opacity-50" style="color: var(--color-text-muted);">{phase.time}</span>
-          </div>
-          <p class="text-sm leading-loose opacity-80 mb-4" style="color: var(--color-text-muted);">
-            {phase.body}
-          </p>
-          {phase.repos.length > 0 && (
-            <div class="flex flex-wrap gap-2">
-              {phase.repos.map(repo => (
-                <a href={`https://github.com/songcun-lab/${repo}`} target="_blank" rel="noopener noreferrer"
-                   class="tag font-mono text-xs">
-                  {repo}
-                </a>
-              ))}
+    <div class="relative">
+      <!-- 年轮竖线 -->
+      <div class="absolute left-[19px] top-2 bottom-2 w-px opacity-30" style="background: var(--color-accent);" aria-hidden="true"></div>
+
+      <div class="space-y-10">
+        {rings.map((r) => (
+          <section class="relative pl-14">
+            <!-- 年轮节点 -->
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2"
+                 style="border-color: var(--color-accent); background: var(--color-bg); color: var(--color-accent); font-family: var(--font-serif);"
+                 aria-hidden="true">
+              {r.ring}
             </div>
-          )}
-        </section>
-      ))}
+
+            <div class="p-6 rounded-lg border" style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+                <h2 class="text-lg font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+                  {r.period} · {r.theme}
+                </h2>
+                <span class="text-xs font-mono opacity-50" style="color: var(--color-text-muted);">{r.time}</span>
+              </div>
+
+              <p class="text-sm font-medium mb-3" style="color: var(--color-accent); font-family: var(--font-serif);">
+                {r.oneLiner}
+              </p>
+
+              <p class="text-sm leading-loose opacity-80 mb-4" style="color: var(--color-text-muted);">
+                {r.body}
+              </p>
+
+              {r.events.length > 0 && (
+                <div class="mb-4 space-y-1.5">
+                  {r.events.map(e => (
+                    <div class="flex gap-3 text-xs leading-relaxed">
+                      <span class="font-mono shrink-0 opacity-60" style="color: var(--color-accent);">{e.date}</span>
+                      <span class="opacity-70" style="color: var(--color-text-muted);">{e.text}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div class="flex flex-wrap items-center gap-2">
+                {r.repos.map(repo => (
+                  <a href={`https://github.com/songcun-lab/${repo}`} target="_blank" rel="noopener noreferrer"
+                     class="tag font-mono text-xs">
+                    {repo}
+                  </a>
+                ))}
+                <span class="text-[10px] opacity-40 ml-auto" style="color: var(--color-text-muted);">
+                  证据：{r.evidence}
+                </span>
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
+
+    <!-- 诚实声明 -->
+    <section class="mt-12 p-5 rounded-lg border text-xs leading-relaxed opacity-70"
+             style="border-color: var(--color-border); color: var(--color-text-muted);">
+      <p class="font-semibold mb-2" style="color: var(--color-text);">关于这条时间线的三点说明</p>
+      <p>一、2026 年 1 月之后的节点均有 commit 级证据；GitHub 之前的经历只能靠回忆，标注"时间待确认"。</p>
+      <p>二、fork 一个仓库只能证明"开始研究"，不等于"精通"，请按此理解上面的措辞。</p>
+      <p>三、涉及公司与私人内容的仓库为私有，文中提及事实但不提供链接。</p>
+    </section>
 
     <section class="mt-14 text-center">
       <p class="text-base leading-loose opacity-60 max-w-md mx-auto"
@@ -84,6 +198,9 @@ const phases = [
         AI 没有让我变年轻，<br />
         但让我重新对世界产生了好奇。
       </p>
+      <a href={url('/blog')} class="inline-block mt-6 text-xs hover:underline" style="color: var(--color-accent);">
+        这些年轮的故事，都写在酒单里 →
+      </a>
       <p class="mt-6 text-xs tracking-[0.25em] uppercase opacity-30" style="color: var(--color-text-muted);">
         From Village to AGI
       </p>

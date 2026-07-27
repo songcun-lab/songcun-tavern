@@ -1,31 +1,81 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/utils';
 
-const projects = [
+// 三层结构：正经生意 → AI 交付 → 实验室
+const ventures = [
+  {
+    name: '禾净环保',
+    en: 'Hejing Env-Tech',
+    status: '进行中',
+    desc: '环保型水凝胶抑尘剂的产业化：面向煤矿、电厂、港口、砂石料场的堆场抑尘、运输抑尘与道路扬尘治理。政策驱动的刚需市场，用二十年行业积累做一门「不性感但算得清账」的工业生意。',
+    detail: '公司官网由 AI 编程一天半建成（19 个 checkpoint 到 V10），省下数万元外包费——这也是我第一个用 AI 交付的真实生产项目。',
+    link: null,
+    linkText: null,
+  },
+  {
+    name: '工业软件 ToB 市场',
+    en: 'Industrial Software',
+    status: '进行中',
+    desc: '在工业软件企业负责煤炭行业市场：智能矿山、设备管理、穿透式监管、企业数字化转型。站在乙方位置，重新理解自己当了二十年的甲方。',
+    detail: '这条线的思考大多写在「工业与能源」和「创业小酌」两个分区里。',
+    link: null,
+    linkText: null,
+  },
+];
+
+const deliveries = [
+  {
+    name: '禾净环保官网',
+    time: '2026-03 · 一天半交付',
+    desc: '从 bootstrap 到 V10 共 19 个 checkpoint，含后续 SEO 改造（robots/sitemap/JSON-LD，PR 工作流）与静态化部署上线。非程序员用 AI 完成的第一个生产级交付。',
+    repo: null,
+    private: true,
+  },
+  {
+    name: '宋村清酒小酒馆',
+    time: '2026-07 · 持续维护',
+    desc: '你正在看的这个网站。Astro + Tailwind CSS + GitHub Actions，push 即发布。全站静态、深色模式、全文搜索、RSS——一个为未来十年准备的个人数字资产容器。',
+    repo: 'songcun-tavern',
+    private: false,
+  },
+];
+
+const labRepos = [
   {
     name: 'ai-skill-index',
-    desc: 'Songcun Lab 的总入口与导航中枢：AI Skill、Prompt、工作流的实践索引库，面向非计算机背景的学习者。',
+    desc: 'Songcun Lab 的总入口与导航中枢：AI Skill、Prompt、工作流的实践索引，面向非计算机背景的学习者。',
     tags: ['索引', 'Skill', '方法论'],
   },
   {
-    name: 'Personal_AI_Infrastructure',
-    desc: '个人 AI 基础设施的搭建实践：让 AI 从聊天工具变成稳定、可复用、可执行的个人能力放大器。',
-    tags: ['PAI', 'Agent', '基础设施'],
-  },
-  {
-    name: 'notes-ai-journey',
-    desc: '中年非科班转 AI 的学习随笔：按时间记录真实的认知变化与心得，写过程与感受。',
-    tags: ['随笔', '学习记录'],
+    name: 'songcun-ledger',
+    desc: '学习主账本：每天学了什么、踩了什么坑（含 PowerShell/Linux 踩坑日志）、想通了什么，流水账式诚实记录。',
+    tags: ['学习账本', '日志'],
   },
   {
     name: 'codex-notes',
-    desc: '可复用的 Prompt 库：把反复用得顺手的提示词沉淀下来，遇到同类任务直接取用。',
+    desc: '可复用 Prompt 库：debug 模板、refactor 模板、通用提示词模板。凌晨两小时建成，之后持续沉淀。',
     tags: ['Prompt', '工具库'],
   },
   {
+    name: 'lab-ai-tools',
+    desc: '工具实验室：Claude Code、Gemini CLI 等工具的第一手对照实测记录，写用后感不写宣传稿。',
+    tags: ['工具实测', '对比'],
+  },
+  {
+    name: 'notes-ai-journey',
+    desc: '中年非科班转 AI 的学习随笔：按时间记录真实的认知变化，写过程与感受。',
+    tags: ['随笔', '学习记录'],
+  },
+  {
+    name: 'Personal_AI_Infrastructure',
+    desc: '个人 AI 基础设施研究：让 AI 从聊天工具变成稳定、可复用、可执行的个人能力放大器。',
+    tags: ['PAI', 'Agent', '基础设施'],
+  },
+  {
     name: 'learn-claude-code',
-    desc: '通过拆解一个极简 Claude Code 式 Agent，理解 AI 编程工具的底层原理。Bash is all you need.',
-    tags: ['Claude Code', 'Agent', '源码学习'],
+    desc: '拆解极简 Claude Code 式 Agent，理解 AI 编程工具的底层原理。Bash is all you need.',
+    tags: ['Claude Code', '源码学习'],
   },
   {
     name: 'agent-skills',
@@ -33,52 +83,120 @@ const projects = [
     tags: ['Skill', 'Agent'],
   },
   {
-    name: 'one-person-businesses-methodology-v2.0',
-    desc: '《一人企业方法论》研读与实践：适合做副业、自媒体、数字商品的非技术人群。',
-    tags: ['一人公司', '创业'],
-  },
-  {
     name: 'Illustrated-Agent-Skills',
     desc: '《图解 Skill——AI 提效实战指南》：用图解的方式把 Skill 讲明白。',
     tags: ['Skill', '教程'],
   },
+  {
+    name: 'one-person-businesses-methodology-v2.0',
+    desc: '《一人企业方法论》研读与实践：一个人 × AI 团队的可能性验证。',
+    tags: ['一人公司', '创业'],
+  },
 ];
 ---
 
-<BaseLayout title="Projects" description="Songcun Lab（栓柱 AI）的公开项目：AI 学习笔记、Prompt 库、Agent 实验与个人 AI 基础设施。">
+<BaseLayout title="Projects" description="掌柜在做的事：禾净环保抑尘剂产业化、工业软件 ToB 市场，以及 Songcun Lab 41 个仓库的 AI 学习实验。">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
     <header class="mb-12">
       <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
         Projects
       </p>
       <h1 class="text-3xl font-bold mb-4" style="color: var(--color-text); font-family: var(--font-serif);">
-        Songcun Lab
+        掌柜在做的事
       </h1>
-      <p class="text-sm leading-relaxed opacity-70 max-w-lg" style="color: var(--color-text-muted);">
-        我的个人 AI 方法论实验室。不是为了炫技，而是为了记录真实使用 AI 的过程、
-        沉淀可复用的方法、与长期学习者同行。全部开放在
-        <a href="https://github.com/songcun-lab" target="_blank" rel="noopener noreferrer"
-           class="hover:underline" style="color: var(--color-accent);">GitHub</a>。
+      <p class="text-sm leading-relaxed opacity-70 max-w-xl" style="color: var(--color-text-muted);">
+        三层结构：最上面是正经生意，中间是 AI 帮我交付的真东西，
+        底下是实验室里持续生长的仓库。不炫技，只记录真实做成和正在做的事。
       </p>
     </header>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {projects.map(p => (
-        <a href={`https://github.com/songcun-lab/${p.name}`} target="_blank" rel="noopener noreferrer"
-           class="group p-5 rounded-lg border transition-all hover:shadow-sm hover:-translate-y-0.5 flex flex-col"
-           style="border-color: var(--color-border); background: var(--color-bg-secondary);">
-          <h2 class="font-mono text-sm font-semibold mb-2 group-hover:underline" style="color: var(--color-accent);">
-            {p.name}
-          </h2>
-          <p class="text-xs leading-relaxed opacity-75 flex-1" style="color: var(--color-text-muted);">
-            {p.desc}
-          </p>
-          <div class="flex flex-wrap gap-1.5 mt-3">
-            {p.tags.map(t => <span class="tag text-[10px]">{t}</span>)}
+    <!-- 一、正经生意 -->
+    <section class="mb-12">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+          正经生意
+        </h2>
+        <span class="text-[10px] tracking-widest uppercase opacity-40" style="color: var(--color-text-muted);">Ventures</span>
+      </div>
+      <div class="space-y-4">
+        {ventures.map(v => (
+          <div class="p-6 rounded-lg border" style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+              <h3 class="text-base font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+                {v.name}
+                <span class="ml-2 text-[10px] tracking-widest uppercase opacity-40 font-sans" style="color: var(--color-text-muted);">{v.en}</span>
+              </h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full border opacity-70"
+                    style="border-color: var(--color-accent); color: var(--color-accent);">{v.status}</span>
+            </div>
+            <p class="text-sm leading-relaxed opacity-80 mb-2" style="color: var(--color-text-muted);">{v.desc}</p>
+            <p class="text-xs leading-relaxed opacity-60 italic" style="color: var(--color-text-muted);">{v.detail}</p>
           </div>
-        </a>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 二、AI 交付 -->
+    <section class="mb-12">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+          AI 帮我交付的真东西
+        </h2>
+        <span class="text-[10px] tracking-widest uppercase opacity-40" style="color: var(--color-text-muted);">Shipped with AI</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {deliveries.map(d => (
+          <div class="p-5 rounded-lg border flex flex-col" style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+            <div class="flex items-baseline justify-between gap-2 mb-1">
+              <h3 class="text-sm font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">{d.name}</h3>
+              {d.private && <span class="text-[10px] opacity-40" style="color: var(--color-text-muted);">私有仓库</span>}
+            </div>
+            <p class="text-[11px] font-mono mb-2 opacity-60" style="color: var(--color-accent);">{d.time}</p>
+            <p class="text-xs leading-relaxed opacity-75 flex-1" style="color: var(--color-text-muted);">{d.desc}</p>
+            {d.repo && (
+              <a href={`https://github.com/songcun-lab/${d.repo}`} target="_blank" rel="noopener noreferrer"
+                 class="mt-3 text-xs font-mono hover:underline" style="color: var(--color-accent);">
+                {d.repo} →
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 三、实验室 -->
+    <section>
+      <div class="flex items-baseline justify-between mb-2">
+        <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+          Songcun Lab 实验室
+        </h2>
+        <span class="text-[10px] tracking-widest uppercase opacity-40" style="color: var(--color-text-muted);">The Lab</span>
+      </div>
+      <p class="text-xs leading-relaxed opacity-60 mb-5 max-w-lg" style="color: var(--color-text-muted);">
+        41 个仓库的精选十座。完整版在
+        <a href="https://github.com/songcun-lab" target="_blank" rel="noopener noreferrer"
+           class="hover:underline" style="color: var(--color-accent);">github.com/songcun-lab</a>，
+        成长过程见 <a href={url('/ai-journey')} class="hover:underline" style="color: var(--color-accent);">AI 数字年轮</a>。
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {labRepos.map(p => (
+          <a href={`https://github.com/songcun-lab/${p.name}`} target="_blank" rel="noopener noreferrer"
+             class="group p-5 rounded-lg border transition-all hover:shadow-sm hover:-translate-y-0.5 flex flex-col"
+             style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+            <h3 class="font-mono text-sm font-semibold mb-2 group-hover:underline" style="color: var(--color-accent);">
+              {p.name}
+            </h3>
+            <p class="text-xs leading-relaxed opacity-75 flex-1" style="color: var(--color-text-muted);">
+              {p.desc}
+            </p>
+            <div class="flex flex-wrap gap-1.5 mt-3">
+              {p.tags.map(t => <span class="tag text-[10px]">{t}</span>)}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
 
     <p class="mt-12 text-center text-xs opacity-40 italic" style="color: var(--color-text-muted);">
       This lab grows slowly, but it grows true.

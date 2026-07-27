@@ -1,8 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/utils';
+
+const updated = '2026 年 7 月 27 日';
+
+// 炉上温着的酒：正在推进的事，附一句"进展到哪了"
+const pots = [
+  {
+    title: '禾净环保 · 抑尘剂产业化',
+    state: '客户验证期',
+    desc: '重点跑煤矿和砂石料场两类场景，打磨「药剂 + 喷洒方案 + 效果验收」的标准交付包。目标是先把三个标杆案例做扎实，再谈规模。',
+  },
+  {
+    title: '工业软件 ToB · 煤炭板块',
+    state: '日常主线',
+    desc: '智能矿山与穿透式监管方向的售前与市场。最近在想清楚一个问题：AI 功能在工业软件里，什么算演示价值，什么算生产价值。',
+  },
+  {
+    title: '小酒馆 · 个人数字资产',
+    state: '刚开张',
+    desc: '网站 V2 刚完成：数字年轮、内容地图、十篇打底文章。接下来按内容地图每周出 1–2 篇，把朋友圈一年多的碎片沉淀成正式文章。',
+  },
+];
 ---
 
-<BaseLayout title="最近在做什么" description="宋村博士的 Now 页面：最近在做什么、在学什么、在想什么。">
+<BaseLayout title="最近在做什么" description="宋村博士的 Now 页面：最近在做什么、在学什么、在读什么、在想什么。更新于 2026 年 7 月。">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
     <header class="mb-10">
       <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
@@ -12,46 +34,71 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         最近在做什么
       </h1>
       <p class="text-xs opacity-50" style="color: var(--color-text-muted);">
-        更新于 2026 年 7 月 · 这是一个 <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--color-accent);">Now 页面</a>
+        更新于 {updated} · 这是一个 <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--color-accent);">Now 页面</a>，大约每月更新一次
       </p>
     </header>
 
-    <div class="prose max-w-none dark:prose-invert">
-      <h2>工作</h2>
-      <p>
-        在一家工业互联网软件企业负责煤炭板块的市场开拓，主要精力放在智能矿山和企业数字化转型方向的
-        ToB 业务上。同时运营两家创业公司，做环保水凝胶抑尘剂的产业化——煤矿、铁路、港口这些扬尘场景，
-        是我最熟悉的战场。
-      </p>
+    <!-- 炉上温着的酒 -->
+    <section class="mb-10">
+      <h2 class="text-lg font-semibold mb-4" style="color: var(--color-text); font-family: var(--font-serif);">
+        炉上温着的三壶酒
+      </h2>
+      <div class="space-y-3">
+        {pots.map(p => (
+          <div class="p-5 rounded-lg border" style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1.5">
+              <h3 class="text-sm font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">{p.title}</h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full border opacity-70"
+                    style="border-color: var(--color-accent); color: var(--color-accent);">{p.state}</span>
+            </div>
+            <p class="text-xs leading-relaxed opacity-75" style="color: var(--color-text-muted);">{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
 
+    <div class="prose max-w-none dark:prose-invert">
       <h2>在学</h2>
       <p>
-        继续深挖 Agent 和 Skill 生态：Claude Code、Codex、Manus 的协同工作流；
-        开始往模型训练的基础理论走，想真正理解 Transformer 到底在做什么。
-        Obsidian 知识库在按「资料原文—加工输出—沉淀知识」的结构慢慢长大。
+        主线是 Agent 与 Skill 生态：从 fork 别人的源码（nanobot、learn-claude-code）到写自己的 Skill，
+        想真正理解 Agent 的工程本质，而不只是会用。副线在往模型训练基础理论走——
+        想搞明白 Transformer 到底在做什么，进度不快，但每周都有推进。
+        Obsidian 知识库按「资料原文—加工输出—沉淀知识」三层结构维护，
+        与 GitHub 上的 <a href="https://github.com/songcun-lab/songcun-ledger" target="_blank" rel="noopener noreferrer">songcun-ledger</a> 学习账本互为镜像。
       </p>
 
       <h2>在写</h2>
       <p>
-        每天一篇 AI 学习感悟，发在朋友圈和小红书，坚持一年多了，一天没断过。
-        这间小酒馆刚开张，正在把过去积累的学习笔记，慢慢整理成能沉淀下来的文章。
+        每天一篇 AI 学习感悟发朋友圈和小红书，一年多没断更。
+        小酒馆开张后多了一条正式写作线：按<a href={url('/blog')}>内容地图</a>每周产出 1–2 篇长文，
+        把碎片感悟升级成有结构、可检索、放十年也不过时的文章。
+        写作原则只有三条：真实经历打底、有判断不骑墙、不写 AI 味的车轱辘话。
       </p>
 
       <h2>在想</h2>
       <p>
-        AI 到底能不能真正走进煤矿和工厂？一个人的经验和判断力，在 AI 时代还值多少钱？
-        以及——人生下半场，一个普通人怎么把日子过得安静而有生命力。
+        三个一直放不下的问题：一、AI 到底能不能真正走进煤矿和工厂——分清演示价值和生产价值之后，答案比想象中复杂；
+        二、一个人的行业经验和判断力，在 AI 时代还值多少钱，怎么定价；
+        三、人生下半场，一个普通人怎么把日子过得安静而有生命力。
+        第三个问题没有截止日期。
+      </p>
+
+      <h2>接下来一个季度</h2>
+      <p>
+        抑尘剂标杆案例落地一到两个；小酒馆发满 20 篇文章并打通小红书/朋友圈的内容分发；
+        把自己的提示词库（codex-notes）升级成真正能给别人用的 Skill 集。
+        立此存照，下季度回来对账。
       </p>
     </div>
 
     <hr class="divider-ink mt-10" />
 
     <p class="text-sm opacity-60 leading-loose" style="color: var(--color-text-muted);">
-      如果你对以上任何一件事感兴趣，欢迎通过
+      如果你对以上任何一件事感兴趣——尤其是工业抑尘、智能矿山或中年学 AI——欢迎通过
       <a href="https://github.com/songcun-lab" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--color-accent);">GitHub</a>
       或
       <a href="https://x.com/Mrsong94411422" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--color-accent);">X</a>
-      找到我。
+      找到我。酒馆常开，欢迎常来。
     </p>
   </div>
 </BaseLayout>

@@ -6,64 +6,132 @@ import { sortPosts, filterPublished, CATEGORY_META, url } from '../lib/utils';
 
 const allPosts = sortPosts(filterPublished(await getCollection('posts')));
 const featuredPosts = allPosts.filter(p => p.data.featured).slice(0, 3);
-const latestPosts = allPosts.slice(0, 6);
+const latestPosts = allPosts.slice(0, 5);
+
+// 人生简要轨迹（首页极简版，完整版见 /timeline）
+const lifeTrack = [
+  { period: '1997–2007', text: '邯郸到北京：矿山机电本科，一路读到管理学博士' },
+  { period: '2007–2024', text: '央企二十年：研究院、能源局借调、法务风控、矿长' },
+  { period: '2024–2025', text: '人生换轨：从甲方到乙方，从体制到市场' },
+  { period: '2025–至今', text: '三线并行：工业软件 × 环保创业 × 深夜学 AI' },
+];
+
+// 正在研究什么（与 /now 同步维护）
+const nowResearching = [
+  { title: 'Agent 与 Skills 生态', desc: '从 fork 源码到写自己的 Skill，理解 Agent 的工程本质' },
+  { title: 'AI 在煤矿的真实落地', desc: '分清演示价值与生产价值，穿透式监管下的数据治理' },
+  { title: '个人数字资产', desc: '博客、知识库、提示词库——十年尺度的内容基建' },
+];
+
+// 精选项目（首页版，完整版见 /projects）
+const homeProjects = [
+  { name: '禾净环保', en: 'Hejing Env-Tech', desc: '水凝胶抑尘剂产业化，官网由 AI 一天半建成', href: url('/projects') },
+  { name: 'songcun-lab', en: 'GitHub Org', desc: '41 个仓库：知识账本、工具实测、提示词库', href: 'https://github.com/songcun-lab' },
+  { name: '宋村清酒小酒馆', en: 'This Tavern', desc: '你正在看的这个网站，Astro + GitHub Actions', href: url('/blog') },
+];
 ---
 
 <BaseLayout>
-  <!-- Hero -->
+  <!-- Hero + 掌柜简介 -->
   <section class="relative overflow-hidden">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-24">
-      <div class="max-w-2xl animate-slide-up">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-14 sm:pt-24 sm:pb-20">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 items-center">
+        <div class="max-w-2xl animate-slide-up">
+          <p class="text-xs tracking-[0.3em] uppercase mb-6 opacity-50" style="color: var(--color-accent);">
+            Songcun Tavern · Notes on AI, Work &amp; Second Life
+          </p>
 
-        <p class="text-xs tracking-[0.3em] uppercase mb-6 opacity-50" style="color: var(--color-accent);">
-          Songcun Tavern · Notes on AI, Work &amp; Second Life
-        </p>
+          <h1 class="text-4xl sm:text-5xl font-bold leading-tight mb-6"
+              style="color: var(--color-text); font-family: var(--font-serif);">
+            宋村清酒小酒馆
+          </h1>
 
-        <h1 class="text-4xl sm:text-5xl font-bold leading-tight mb-6"
-            style="color: var(--color-text); font-family: var(--font-serif);">
-          宋村清酒小酒馆
-        </h1>
+          <p class="text-xl sm:text-2xl font-medium mb-6" style="color: var(--color-accent); font-family: var(--font-serif);">
+            人到中场，借 AI 重启人生。
+          </p>
 
-        <p class="text-xl sm:text-2xl font-medium mb-6" style="color: var(--color-accent); font-family: var(--font-serif);">
-          人到中场，借 AI 重启人生。
-        </p>
+          <p class="text-base leading-relaxed opacity-75 mb-8 max-w-lg" style="color: var(--color-text-muted);">
+            掌柜宋村，管理学博士。能源煤炭行业二十余年——做过研究、写过政策、当过矿长；
+            人生中段经历一次重大转折后换轨重启：白天做工业软件与环保创业，
+            深夜学 AI。这间酒馆存放他的真实记录。
+          </p>
 
-        <p class="text-base leading-relaxed opacity-75 mb-10 max-w-lg" style="color: var(--color-text-muted);">
-          关于 AI、工作、工业、创业，<br />
-          以及人生下半场的一些真实记录。
-        </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <a href={url('/blog')}
+               class="px-5 py-2.5 text-sm font-medium rounded transition-all hover:opacity-90"
+               style="background: var(--color-accent); color: var(--color-bg);">
+              看看今晚酒单
+            </a>
+            <a href={url('/ai-journey')}
+               class="px-5 py-2.5 text-sm font-medium rounded border transition-all hover:opacity-80"
+               style="border-color: var(--color-accent); color: var(--color-accent);">
+              AI 数字年轮
+            </a>
+            <a href={url('/about')}
+               class="px-5 py-2.5 text-sm font-medium rounded border transition-all hover:opacity-80"
+               style="border-color: var(--color-border); color: var(--color-text);">
+              认识一下掌柜
+            </a>
+          </div>
 
-        <div class="flex flex-wrap items-center gap-4">
-          <a href={url('/blog')}
-             class="px-5 py-2.5 text-sm font-medium rounded transition-all hover:opacity-90"
-             style="background: var(--color-accent); color: var(--color-bg);">
-            看看今晚酒单
-          </a>
-          <a href={url('/about')}
-             class="px-5 py-2.5 text-sm font-medium rounded border transition-all hover:opacity-80"
-             style="border-color: var(--color-border); color: var(--color-text);">
-            认识一下掌柜
-          </a>
+          <p class="mt-10 text-[11px] tracking-[0.25em] uppercase opacity-30" style="color: var(--color-text-muted);">
+            From Village to AGI
+          </p>
         </div>
 
-        <p class="mt-12 text-[11px] tracking-[0.25em] uppercase opacity-30" style="color: var(--color-text-muted);">
-          From Village to AGI
-        </p>
+        <!-- 掌柜照片 -->
+        <div class="hidden md:block animate-slide-up">
+          <div class="relative w-52 lg:w-60">
+            <div class="absolute -inset-2 rounded-lg opacity-30"
+                 style="background: linear-gradient(135deg, var(--color-accent), transparent 60%);"></div>
+            <img src={url('/images/songcun-portrait.jpg')}
+                 alt="掌柜宋村"
+                 width="460" height="460"
+                 loading="eager"
+                 class="relative rounded-lg w-full object-cover shadow-md"
+                 style="border: 1px solid var(--color-border);" />
+            <p class="mt-3 text-center text-[11px] tracking-widest opacity-50" style="color: var(--color-text-muted);">
+              掌柜 · 宋村博士
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Decorative vertical text (Oriental element) -->
-    <div class="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2 select-none pointer-events-none" aria-hidden="true">
-      <p class="text-6xl opacity-[0.06] leading-tight"
+    <div class="hidden xl:block absolute right-6 top-1/2 -translate-y-1/2 select-none pointer-events-none" aria-hidden="true">
+      <p class="text-5xl opacity-[0.06] leading-tight"
          style="color: var(--color-text); font-family: var(--font-serif); writing-mode: vertical-rl;">
         有客自远方来<br/>坐下喝一杯
       </p>
     </div>
   </section>
 
-  <!-- Featured -->
+  <!-- 人生简要轨迹 -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+    <div class="rounded-lg border p-6 sm:p-8" style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+          掌柜的来路
+        </h2>
+        <a href={url('/timeline')} class="text-xs opacity-60 hover:opacity-100 transition-opacity" style="color: var(--color-accent);">
+          完整轨迹 →
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {lifeTrack.map(item => (
+          <div class="relative pl-4" style="border-left: 2px solid var(--color-accent);">
+            <p class="text-xs font-mono mb-1.5 opacity-70" style="color: var(--color-accent);">{item.period}</p>
+            <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured 掌柜推荐 -->
   {featuredPosts.length > 0 && (
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
       <div class="flex items-baseline justify-between mb-2">
         <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
           掌柜推荐
@@ -78,8 +146,32 @@ const latestPosts = allPosts.slice(0, 6);
     </section>
   )}
 
+  <!-- 正在研究什么 -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+    <div class="flex items-baseline justify-between mb-6">
+      <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+        炉上温着的三壶酒
+      </h2>
+      <a href={url('/now')} class="text-xs opacity-60 hover:opacity-100 transition-opacity" style="color: var(--color-accent);">
+        Now 页面 →
+      </a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {nowResearching.map(item => (
+        <div class="p-5 rounded-lg border" style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+          <h3 class="font-semibold text-sm mb-2" style="color: var(--color-text); font-family: var(--font-serif);">
+            {item.title}
+          </h3>
+          <p class="text-xs leading-relaxed opacity-70" style="color: var(--color-text-muted);">
+            {item.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <!-- Latest -->
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
     <div class="flex items-baseline justify-between mb-2">
       <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
         今日新酿
@@ -93,8 +185,41 @@ const latestPosts = allPosts.slice(0, 6);
     </div>
   </section>
 
+  <!-- Projects -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+    <div class="flex items-baseline justify-between mb-6">
+      <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
+        掌柜在做的事
+      </h2>
+      <a href={url('/projects')} class="text-xs opacity-60 hover:opacity-100 transition-opacity" style="color: var(--color-accent);">
+        全部项目 →
+      </a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {homeProjects.map(p => (
+        <a href={p.href}
+           target={p.href.startsWith('http') ? '_blank' : undefined}
+           rel={p.href.startsWith('http') ? 'noopener' : undefined}
+           class="group p-5 rounded-lg border transition-all hover:shadow-sm hover:-translate-y-0.5"
+           style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+          <div class="flex items-baseline justify-between mb-2">
+            <h3 class="font-semibold text-sm" style="color: var(--color-text); font-family: var(--font-serif);">
+              {p.name}
+            </h3>
+            <span class="text-[10px] tracking-widest uppercase opacity-40" style="color: var(--color-text-muted);">
+              {p.en}
+            </span>
+          </div>
+          <p class="text-xs leading-relaxed opacity-70" style="color: var(--color-text-muted);">
+            {p.desc}
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+
   <!-- Categories -->
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
     <div class="flex items-baseline justify-between mb-6">
       <h2 class="text-xl font-semibold" style="color: var(--color-text); font-family: var(--font-serif);">
         酒馆分区
