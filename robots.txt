@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://songcun-lab.github.io/songcun-tavern/sitemap-index.xml
