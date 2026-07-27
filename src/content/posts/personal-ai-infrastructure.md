@@ -7,7 +7,7 @@ tags: [个人AI基础设施, PAI, 工作流, Obsidian, Agent]
 featured: false
 ---
 
-用了两年多 AI，我最近有一个越来越强烈的判断：
+用了一年多 AI，我最近有一个越来越强烈的判断：
 
 **会用 AI 工具的人很快会到处都是，但拥有自己 AI 系统的人，会长期稀缺。**
 
@@ -51,7 +51,7 @@ featured: false
 
 这是业务能力，不是编程能力。一个管过企业的人，给自己的工作流画泳道图，比写代码熟练多了。
 
-我从今年年初开始做这件事，进度不快：研读了 Claude Code 的运行机制，跑通了几个轻量 Agent 框架，Obsidian 库初具规模，Prompt 库每周都在长。所有过程都公开在 [Songcun Lab](https://github.com/songcun-lab)。
+我从今年年初开始做这件事，进度不快：研读了 Claude Code 的运行机制，研读了几个轻量 Agent 框架的源码，Obsidian 库初具规模，Prompt 库每周都在长。所有过程都公开在 [Songcun Lab](https://github.com/songcun-lab)。
 
 ## 为什么值得
 

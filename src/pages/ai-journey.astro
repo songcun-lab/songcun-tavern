@@ -3,7 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { url } from '../lib/utils';
 
 // 数字年轮：基于 songcun-lab 41 个仓库的创建时间与 commit 级证据重建
-// 方法论：有 GitHub 证据的节点标注证据；GitHub 之前的节点诚实标注"时间待确认"
+// V2.1 证据分级：verified = GitHub 可验证事实 / inferred = 根据证据合理推断 / memory = 本人回忆，待确认
+// 注意：GitHub commit 时间戳为 UTC，换算为北京时间需加 8 小时；页面中的具体钟点均标注 UTC
+const evidenceLevels = {
+  verified: { label: 'GitHub 可验证事实', color: 'var(--color-accent)' },
+  inferred: { label: '根据证据合理推断', color: 'var(--color-text-muted)' },
+  memory: { label: '本人回忆，待确认', color: 'var(--color-text-muted)' },
+};
 const rings = [
   {
     ring: '〇',
@@ -11,10 +17,11 @@ const rings = [
     time: '约 2024 底 — 2025（时间待确认）',
     theme: '陪伴与好奇',
     oneLiner: '深夜的 ChatGPT，先是对话者，后是工具。',
-    body: '人生中段的一次重大转折之后，深夜睡不着的日子里开始和 ChatGPT 长聊。最初的问题与技术无关；直到某天问了它一个煤炭行业的专业问题，发现它答得有模有样、也有几处错得离谱——那几处错误点燃了较真的欲望。之后开始每天在朋友圈输出 AI 学习感悟，一年多没断更。这段经历没有 GitHub 证据，具体起点时间待考。',
+    body: '人生中段的一次重大转折之后，深夜睡不着的日子里开始和 ChatGPT 长聊。最初的问题与技术无关；直到某天问了它一个煤炭行业的专业问题，发现它答得有模有样、也有几处错得离谱——那几处错误点燃了较真的欲望。之后开始每天在朋友圈输出 AI 学习感悟，一年多来几乎没断更。这段经历没有 GitHub 证据，具体起点时间待考。',
     events: [],
     repos: [],
-    evidence: '本人自述，时间待确认',
+    level: 'memory',
+    evidence: '本人自述，无 GitHub 证据，起点时间待确认',
   },
   {
     ring: '一',
@@ -22,13 +29,14 @@ const rings = [
     time: '2026-01-14 — 01-26',
     theme: '落户与架构',
     oneLiner: '一周之内，建成个人知识仓库体系。',
-    body: '进入 GitHub 的第一个动作是 fork awesome-claude-skills 研究 Skill 生态。1 月 20 日晚建立组织主页，当晚 19:00 写下第一篇工具实测《Claude Code · First Impression》，19:10 完成 Claude Code 与 Gemini CLI 的对照实验。随后几天陆续建成：总入口（ai-skill-index）、学习账本（songcun-ledger）、工具实验室（lab-ai-tools）、叙事复盘（notes-ai-journey）、设计提示词库（lovart-prompt-library，单日 15 commits）。这不是程序员的仓库布局，是知识管理者的布局。',
+    body: '在 songcun-lab 组织内，最早的一个仓库是 1 月 14 日 fork 的 awesome-claude-skills——用于研究 Skill 生态。1 月 20 日（UTC）写下第一篇工具实测《Claude Code · First Impression》，十分钟后提交 Claude Code 与 Gemini CLI 的对照实验。随后几天陆续建成：总入口（ai-skill-index）、学习账本（songcun-ledger）、工具实验室（lab-ai-tools）、叙事复盘（notes-ai-journey）、设计提示词库（lovart-prompt-library，单日 15 commits）。这不是程序员的仓库布局，是知识管理者的布局。GitHub 账号本身的注册时间早于组织建立，具体日期待本人确认。',
     events: [
-      { date: '01-14', text: 'fork awesome-claude-skills——进 GitHub 的第一个动作是研究 Skills' },
-      { date: '01-20 19:00', text: '第一篇工具实测《Claude Code · First Impression》入库' },
-      { date: '01-22', text: '学习主账本 songcun-ledger 建立，含 PowerShell/Linux 踩坑日志' },
+      { date: '01-14', text: 'fork awesome-claude-skills，组织内现存最早的仓库记录' },
+      { date: '01-20 19:00 UTC', text: '第一篇工具实测《Claude Code · First Impression》入库' },
+      { date: '01-22', text: '学习主账本（后更名为 songcun-ledger）建立，含 PowerShell/Linux 踩坑日志' },
     ],
     repos: ['ai-skill-index', 'lab-ai-tools', 'songcun-ledger', 'notes-ai-journey'],
+    level: 'verified',
     evidence: '仓库创建时间 + commit 记录',
   },
   {
@@ -36,15 +44,16 @@ const rings = [
     period: '2026 年 2 月',
     time: '2026-02-06 — 02-28',
     theme: '提示词工程化',
-    oneLiner: '凌晨两小时，把 Prompt 变成模板资产。',
-    body: '2 月 6 日凌晨 04:40 到 06:50，两个小时内建成 codex-notes：debug 模板、refactor 模板、通用提示词模板、使用指南，连续 10 个 commit——散落在聊天记录里的提示词从此变成可复用的资产。同月 fork 了 Personal_AI_Infrastructure，「个人 AI 基础设施」这个概念正式进入视野；随后密集研究 pi-mono、nanobot、picoclaw 等轻量 Agent 实现。',
+    oneLiner: '两小时，把 Prompt 变成模板资产。',
+    body: '2 月 6 日 04:40 到 06:50（UTC，北京时间当天中午），两个小时内建成 codex-notes：debug 模板、refactor 模板、通用提示词模板、使用指南，连续 10 个 commit——散落在聊天记录里的提示词从此变成可复用的资产。同月 fork 了 Personal_AI_Infrastructure，「个人 AI 基础设施」这个概念正式进入视野；随后密集 fork pi-mono、nanobot、picoclaw 等轻量 Agent 实现，开始研读。',
     events: [
-      { date: '02-06 04:40', text: 'codex-notes 凌晨建库，两小时 10 commits' },
+      { date: '02-06 04:40 UTC', text: 'codex-notes 建库，两小时连续 10 commits' },
       { date: '02-11', text: 'fork Personal_AI_Infrastructure——概念入视野' },
-      { date: '02-14~28', text: '密集 fork 五个轻量 Agent 框架，开始读源码' },
+      { date: '02-14~28', text: '密集 fork 五个轻量 Agent 框架，开始研读' },
     ],
     repos: ['codex-notes', 'Personal_AI_Infrastructure', 'nanobot'],
-    evidence: 'commit 时间戳序列',
+    level: 'verified',
+    evidence: 'commit 时间戳序列（UTC）',
   },
   {
     ring: '三',
@@ -52,14 +61,15 @@ const rings = [
     time: '2026-03-02 — 03-22',
     theme: '第一次真实交付',
     oneLiner: '一天半，用 AI 建成公司官网 V10。',
-    body: '3 月 9 日 14:17 创建禾净环保官网仓库（私有），一天半内从 bootstrap 到 V10，19 个 checkpoint commit——第一次用 AI 编程为自己的公司交付真实生产项目，省下数万元外包费。同月 fork vibe-coding-cn，"Vibe Coding"作为方法论被正式纳入；fork 一人企业方法论，创业与 AI 两条线开始交汇。',
+    body: '3 月 9 日 14:17（UTC）创建禾净环保官网仓库（私有），一天半内从 bootstrap 到 V10，共 12 个 commit——在 songcun-lab 的仓库记录里，这是第一个用 AI 编程为自己公司交付的生产项目，省下一笔外包费（金额为本人估算）。同月 fork vibe-coding-cn，"Vibe Coding"作为方法论被纳入参考；fork 一人企业方法论，创业与 AI 两条线开始交汇。',
     events: [
-      { date: '03-09 14:17', text: '禾净官网开工，一天半 19 个 checkpoint 到 V10' },
+      { date: '03-09 14:17 UTC', text: '禾净官网开工，一天半内 12 个 commit 到 V10' },
       { date: '03-18', text: 'fork learn-claude-code（"Bash is all you need"）' },
-      { date: '03-22', text: 'Vibe Coding 方法论正式纳入工具箱' },
+      { date: '03-22', text: 'fork vibe-coding-cn，Vibe Coding 方法论纳入参考' },
     ],
     repos: ['vibe-coding-cn', 'learn-claude-code', 'one-person-businesses-methodology-v2.0'],
-    evidence: 'commit 序列（官网仓库为私有，不外链）',
+    level: 'verified',
+    evidence: 'commit 序列（官网仓库为私有，不外链）；外包费金额为本人估算', 
   },
   {
     ring: '四',
@@ -74,6 +84,7 @@ const rings = [
       { date: '05-02', text: '第一次 Pull Request：官网 SEO 改造（PR #1、#2）' },
     ],
     repos: ['claude-code', 'hermes-agent'],
+    level: 'verified',
     evidence: '仓库创建时间 + PR 记录',
   },
   {
@@ -82,14 +93,15 @@ const rings = [
     time: '2026-06-10 — 06-23',
     theme: '治理与收口',
     oneLiner: '22 分钟治理 5 个仓库，从囤积到秩序。',
-    body: '6 月 10 日，公司官网完成静态化改造并正式部署上线生产环境。6 月 22 日 18:18 到 18:40，22 分钟内连续治理 5 个仓库的 README：移除失效链接、对齐真实目录、标注归档建议。6 月 23 日把 my-project 改名为 songcun-ledger——命名体系成熟。知识管理的上半场是收集，下半场是治理；这个月完成了转场。',
+    body: '6 月 10 日，公司官网完成静态化改造并部署上线。6 月 22 日 18:18 到 18:40（UTC），22 分钟内连续治理 5 个仓库的 README：移除失效链接、对齐真实目录、标注归档建议。6 月 23 日把 my-project 改名为 songcun-ledger——命名体系成熟。知识管理的上半场是收集，下半场是治理；这个月完成了转场。',
     events: [
-      { date: '06-10', text: '公司官网静态化上线生产环境（PR #3）' },
-      { date: '06-22 18:18', text: '22 分钟连续治理 5 个仓库 README' },
+      { date: '06-10', text: '公司官网静态化上线（PR #3）' },
+      { date: '06-22 18:18 UTC', text: '22 分钟连续治理 5 个仓库 README' },
       { date: '06-23', text: 'my-project 更名 songcun-ledger，命名收口' },
     ],
     repos: ['songcun-lab'],
-    evidence: 'commit 时间戳序列',
+    level: 'verified',
+    evidence: 'commit 时间戳序列（UTC）',
   },
   {
     ring: '六',
@@ -102,6 +114,7 @@ const rings = [
       { date: '07-27', text: '小酒馆上线，push 即发布的内容流水线打通' },
     ],
     repos: ['songcun-tavern'],
+    level: 'verified',
     evidence: 'commit 序列 + 你正在看的这个网站',
   },
 ];
@@ -147,6 +160,13 @@ const rings = [
                 <span class="text-xs font-mono opacity-50" style="color: var(--color-text-muted);">{r.time}</span>
               </div>
 
+              <div class="mb-2">
+                <span class="inline-block text-[10px] px-2 py-0.5 rounded border"
+                      style={`border-color: var(--color-border); color: ${evidenceLevels[r.level].color}; opacity: ${r.level === 'verified' ? '0.9' : '0.6'};`}>
+                  【{evidenceLevels[r.level].label}】
+                </span>
+              </div>
+
               <p class="text-sm font-medium mb-3" style="color: var(--color-accent); font-family: var(--font-serif);">
                 {r.oneLiner}
               </p>
@@ -186,10 +206,12 @@ const rings = [
     <!-- 诚实声明 -->
     <section class="mt-12 p-5 rounded-lg border text-xs leading-relaxed opacity-70"
              style="border-color: var(--color-border); color: var(--color-text-muted);">
-      <p class="font-semibold mb-2" style="color: var(--color-text);">关于这条时间线的三点说明</p>
-      <p>一、2026 年 1 月之后的节点均有 commit 级证据；GitHub 之前的经历只能靠回忆，标注"时间待确认"。</p>
-      <p>二、fork 一个仓库只能证明"开始研究"，不等于"精通"，请按此理解上面的措辞。</p>
-      <p>三、涉及公司与私人内容的仓库为私有，文中提及事实但不提供链接。</p>
+      <p class="font-semibold mb-2" style="color: var(--color-text);">关于这条时间线的五点说明</p>
+      <p>一、每圈年轮标有证据等级：【GitHub 可验证事实】指可对应到具体仓库与 commit/PR 记录；【根据证据合理推断】指由证据引申但未直接记录的判断；【本人回忆，待确认】指无法用材料验证的经历。</p>
+      <p>二、2026 年 1 月之后的节点均有 commit 级证据；GitHub 之前的经历只能靠回忆，标注"时间待确认"。</p>
+      <p>三、页面中的具体钟点均为 GitHub 记录的 UTC 时间，换算为北京时间需加 8 小时；据此推算作息时请注意换算。</p>
+      <p>四、fork 一个仓库只能证明"开始研究"，不等于"精通"；commit 只能证明代码行为，不等于人生事实，请按此理解上面的措辞。</p>
+      <p>五、涉及公司与私人内容的仓库为私有，文中提及事实但不提供链接；金额类信息（如外包费）均为本人估算，非审计数字。</p>
     </section>
 
     <section class="mt-14 text-center">
