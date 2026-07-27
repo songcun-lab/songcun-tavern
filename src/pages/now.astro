@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="最近在做什么" description="宋村博士的 Now 页面：最近在做什么、在学什么、在想什么。">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <header class="mb-10">
+      <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
+        Now
+      </p>
+      <h1 class="text-3xl font-bold mb-4" style="color: var(--color-text); font-family: var(--font-serif);">
+        最近在做什么
+      </h1>
+      <p class="text-xs opacity-50" style="color: var(--color-text-muted);">
+        更新于 2026 年 7 月 · 这是一个 <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--color-accent);">Now 页面</a>
+      </p>
+    </header>
+
+    <div class="prose max-w-none dark:prose-invert">
+      <h2>工作</h2>
+      <p>
+        在一家工业互联网软件企业负责煤炭板块的市场开拓，主要精力放在智能矿山和企业数字化转型方向的
+        ToB 业务上。同时运营两家创业公司，做环保水凝胶抑尘剂的产业化——煤矿、铁路、港口这些扬尘场景，
+        是我最熟悉的战场。
+      </p>
+
+      <h2>在学</h2>
+      <p>
+        继续深挖 Agent 和 Skill 生态：Claude Code、Codex、Manus 的协同工作流；
+        开始往模型训练的基础理论走，想真正理解 Transformer 到底在做什么。
+        Obsidian 知识库在按「资料原文—加工输出—沉淀知识」的结构慢慢长大。
+      </p>
+
+      <h2>在写</h2>
+      <p>
+        每天一篇 AI 学习感悟，发在朋友圈和小红书，坚持一年多了，一天没断过。
+        这间小酒馆刚开张，正在把过去积累的学习笔记，慢慢整理成能沉淀下来的文章。
+      </p>
+
+      <h2>在想</h2>
+      <p>
+        AI 到底能不能真正走进煤矿和工厂？一个人的经验和判断力，在 AI 时代还值多少钱？
+        以及——人生下半场，一个普通人怎么把日子过得安静而有生命力。
+      </p>
+    </div>
+
+    <hr class="divider-ink mt-10" />
+
+    <p class="text-sm opacity-60 leading-loose" style="color: var(--color-text-muted);">
+      如果你对以上任何一件事感兴趣，欢迎通过
+      <a href="https://github.com/songcun-lab" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--color-accent);">GitHub</a>
+      或
+      <a href="https://x.com/Mrsong94411422" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--color-accent);">X</a>
+      找到我。
+    </p>
+  </div>
+</BaseLayout>

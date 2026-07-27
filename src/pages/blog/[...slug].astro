@@ -1,0 +1,142 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, categorySlug, sortPosts, filterPublished, readingTime, url } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const posts = filterPublished(await getCollection('posts'));
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const { title, description, date, updated, category, tags } = post.data;
+
+// prev / next
+const allPosts = sortPosts(filterPublished(await getCollection('posts')));
+const idx = allPosts.findIndex(p => p.slug === post.slug);
+const prevPost = idx < allPosts.length - 1 ? allPosts[idx + 1] : null;
+const nextPost = idx > 0 ? allPosts[idx - 1] : null;
+
+// related posts: same category or shared tags
+const related = allPosts
+  .filter(p => p.slug !== post.slug)
+  .map(p => {
+    let score = 0;
+    if (p.data.category === category) score += 2;
+    score += p.data.tags.filter(t => tags.includes(t)).length;
+    return { post: p, score };
+  })
+  .filter(r => r.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3)
+  .map(r => r.post);
+
+const minutes = readingTime(post.body);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  article={true}
+  publishedTime={date.toISOString()}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+
+    <!-- Post header -->
+    <header class="mb-10">
+      <div class="flex flex-wrap items-center gap-2 text-xs mb-4" style="color: var(--color-text-muted);">
+        <a href={url(`/categories/${categorySlug(category)}`)} class="category-badge hover:underline">
+          {category}
+        </a>
+        <span class="opacity-40">·</span>
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        {updated && (
+          <>
+            <span class="opacity-40">·</span>
+            <span>更新于 {formatDate(updated)}</span>
+          </>
+        )}
+        <span class="opacity-40">·</span>
+        <span>约 {minutes} 分钟</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-bold leading-snug mb-4"
+          style="color: var(--color-text); font-family: var(--font-serif);">
+        {title}
+      </h1>
+
+      <p class="text-base leading-relaxed opacity-70" style="color: var(--color-text-muted);">
+        {description}
+      </p>
+    </header>
+
+    <hr class="divider-ink" />
+
+    <!-- Content -->
+    <div class="prose prose-lg max-w-none dark:prose-invert">
+      <Content />
+    </div>
+
+    <!-- Tags -->
+    {tags.length > 0 && (
+      <div class="mt-10 flex flex-wrap gap-2">
+        {tags.map(tag => (
+          <a href={url(`/tags/${encodeURIComponent(tag)}`)} class="tag">#{tag}</a>
+        ))}
+      </div>
+    )}
+
+    <hr class="divider-ink mt-10" />
+
+    <!-- Prev / Next -->
+    <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8" aria-label="文章导航">
+      {prevPost ? (
+        <a href={url(`/blog/${prevPost.slug}`)}
+           class="p-4 rounded-lg border transition-all hover:shadow-sm"
+           style="border-color: var(--color-border);">
+          <span class="text-xs opacity-50" style="color: var(--color-text-muted);">← 上一篇</span>
+          <p class="text-sm font-medium mt-1 line-clamp-1" style="color: var(--color-text);">
+            {prevPost.data.title}
+          </p>
+        </a>
+      ) : <div />}
+      {nextPost ? (
+        <a href={url(`/blog/${nextPost.slug}`)}
+           class="p-4 rounded-lg border transition-all hover:shadow-sm text-right"
+           style="border-color: var(--color-border);">
+          <span class="text-xs opacity-50" style="color: var(--color-text-muted);">下一篇 →</span>
+          <p class="text-sm font-medium mt-1 line-clamp-1" style="color: var(--color-text);">
+            {nextPost.data.title}
+          </p>
+        </a>
+      ) : <div />}
+    </nav>
+
+    <!-- Related -->
+    {related.length > 0 && (
+      <section class="mt-12">
+        <h2 class="text-lg font-semibold mb-4" style="color: var(--color-text); font-family: var(--font-serif);">
+          还可以再来一杯
+        </h2>
+        <ul class="space-y-3">
+          {related.map(p => (
+            <li>
+              <a href={url(`/blog/${p.slug}`)} class="group flex items-baseline gap-3">
+                <time class="text-xs shrink-0 opacity-50" style="color: var(--color-text-muted);">
+                  {formatDate(p.data.date)}
+                </time>
+                <span class="text-sm group-hover:underline" style="color: var(--color-text);">
+                  {p.data.title}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+</BaseLayout>

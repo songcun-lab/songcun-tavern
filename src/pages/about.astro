@@ -1,0 +1,126 @@
+---
+import { url } from '../lib/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const stages = [
+  {
+    period: '2004 — 2009',
+    title: '能源行业研究者',
+    body: '在中国矿业大学（北京）攻读管理学博士，方向是煤炭投资决策模型。毕业后留在能源经济研究所做研究员，参与了《国家煤炭产业政策》的基础研究和煤炭工业"十二五"规划的前期工作，也为多家大型能源集团做过战略咨询。那几年跑遍了全国几乎所有产煤的省份，对这个行业的认识，是一个矿一个矿走出来的。',
+  },
+  {
+    period: '2009 — 2021',
+    title: '政策参与者与央企管理者',
+    body: '进入大型能源央企从事煤炭板块战略投资，其间被借调到国家能源局煤炭司工作五年，参与了国家煤炭产业政策和行业五年规划的起草，经手了十几个国家特大型煤矿的核准批复。回到企业后，先后负责过战略投资、法务风控、生产技术等多个条线。这十二年让我完整地看到了：一个行业的政策是怎么制定的，一家大企业是怎么运转的。',
+  },
+  {
+    period: '2021 — 2024',
+    title: '矿山建设实践者',
+    body: '到内蒙古鄂尔多斯担任一座总投资 71 亿元、年产 700 万吨特大型煤矿的总经理和矿长。从只有 4 名留守员工开始，组建团队、完善治理、推进项目核准、组织设计优化，也牵头做了智能化矿山和绿色矿山的设计。这是我职业生涯里最"重"的一段经历——真正从 0 到 1 把一个特大型工业项目立起来。',
+  },
+  {
+    period: '2024 —',
+    title: '进入工业软件与数字化',
+    body: '人生中段经历重大转折之后，我离开了体制，加入一家工业互联网软件企业，负责煤炭行业的市场开拓。从"管资产"转向"卖软件"，从甲方变成乙方。这一年重新理解了什么叫市场、什么叫客户价值。也是从这时开始，我第一次认真地把 AI 当作一件严肃的事来学。',
+  },
+  {
+    period: '2025 —',
+    title: 'AI、工业与创业的交叉探索',
+    body: '系统学习 AI：从 ChatGPT 到 Claude Code、Codex，从 Prompt 到 Agent、Skill、MCP，从氛围编程到搭建自己的个人 AI 基础设施（Songcun Lab）。同时和伙伴一起做环保水凝胶抑尘剂的创业，探索工业环保这个细分市场。白天做 ToB 业务，晚上写代码、做笔记、更新 GitHub。48 岁，重新做回一个学生。',
+  },
+];
+---
+
+<BaseLayout title="关于掌柜" description="宋村博士——一个来自传统能源行业的中年管理学博士，在人生中场经历重大转折之后，重新学习 AI、重新出发的故事。">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+
+    <header class="mb-12">
+      <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
+        About the Keeper
+      </p>
+      <h1 class="text-3xl font-bold mb-6" style="color: var(--color-text); font-family: var(--font-serif);">
+        关于掌柜
+      </h1>
+
+      <div class="prose max-w-none dark:prose-invert">
+        <p>
+          我是宋村，这间小酒馆的掌柜。48 岁，管理学博士，来自传统工业和能源行业，不是计算机科班出身。
+        </p>
+        <p>
+          曾经一路顺遂的人生在中年突然改变了轨道。之后我重新进入市场、重新学习、重新理解职业，
+          也重新学习如何面对自己。AI 出现在我人生最需要一件新事物的时候——它没有让我变年轻，
+          但让我重新对世界产生了好奇。
+        </p>
+        <p>
+          这个网站不是简历，也不是教程，更不是营销。它只是一个仍然在路上的普通学习者，
+          把自己走过的路，一段一段记下来。
+        </p>
+      </div>
+    </header>
+
+    <hr class="divider-ink" />
+
+    <!-- Five stages -->
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold mb-8" style="color: var(--color-text); font-family: var(--font-serif);">
+        五个阶段
+      </h2>
+
+      <div class="relative border-l-2 pl-8 space-y-12" style="border-color: var(--color-border);">
+        {stages.map((stage) => (
+          <div class="relative">
+            <span class="absolute -left-[41px] top-1.5 w-4 h-4 rounded-full border-2"
+                  style="background: var(--color-bg); border-color: var(--color-accent);"></span>
+            <p class="text-xs tracking-wider mb-1" style="color: var(--color-accent);">
+              {stage.period}
+            </p>
+            <h3 class="text-lg font-semibold mb-3" style="color: var(--color-text); font-family: var(--font-serif);">
+              {stage.title}
+            </h3>
+            <p class="text-sm leading-loose opacity-80" style="color: var(--color-text-muted);">
+              {stage.body}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <hr class="divider-ink mt-12" />
+
+    <!-- What I care about -->
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold mb-6" style="color: var(--color-text); font-family: var(--font-serif);">
+        我关心的问题
+      </h2>
+      <div class="prose max-w-none dark:prose-invert">
+        <p>
+          AI 在真实世界中如何被理解、被使用、被管理；非技术背景的人，如何建立与 AI 的长期协作能力；
+          传统工业和能源行业，如何真正用上 AI；以及——一个普通人，如何在人生下半场重建秩序、
+          持续学习、把日子过成自己想要的样子。
+        </p>
+        <p>
+          如果你也是中年转型路上的人，或者也在学 AI，或者只是路过——欢迎坐下来喝一杯。
+        </p>
+      </div>
+    </section>
+
+    <!-- Links -->
+    <section class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <a href={url('/timeline')} class="p-5 rounded-lg border transition-all hover:shadow-sm hover:-translate-y-0.5"
+         style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+        <h3 class="font-semibold mb-1" style="color: var(--color-text); font-family: var(--font-serif);">人生时间线</h3>
+        <p class="text-xs opacity-60" style="color: var(--color-text-muted);">从村庄到矿山，再到 AI。</p>
+      </a>
+      <a href={url('/ai-journey')} class="p-5 rounded-lg border transition-all hover:shadow-sm hover:-translate-y-0.5"
+         style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+        <h3 class="font-semibold mb-1" style="color: var(--color-text); font-family: var(--font-serif);">AI 学习时间线</h3>
+        <p class="text-xs opacity-60" style="color: var(--color-text-muted);">一个非科班中年人的 AI 学习轨迹。</p>
+      </a>
+      <a href={url('/projects')} class="p-5 rounded-lg border transition-all hover:shadow-sm hover:-translate-y-0.5"
+         style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+        <h3 class="font-semibold mb-1" style="color: var(--color-text); font-family: var(--font-serif);">Projects</h3>
+        <p class="text-xs opacity-60" style="color: var(--color-text-muted);">Songcun Lab 的公开项目。</p>
+      </a>
+    </section>
+  </div>
+</BaseLayout>

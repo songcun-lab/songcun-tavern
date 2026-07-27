@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { sortPosts, filterPublished, url } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const posts = filterPublished(await getCollection('posts'));
+  const tags = new Set<string>();
+  for (const p of posts) {
+    for (const t of p.data.tags) tags.add(t);
+  }
+  return [...tags].map(tag => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const posts = sortPosts(
+  filterPublished(await getCollection('posts')).filter(p =>
+    p.data.tags.includes(tag!)
+  )
+);
+---
+
+<BaseLayout title={`标签：${tag}`} description={`宋村清酒小酒馆中打了「${tag}」标签的全部文章。`}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <header class="mb-10">
+      <h1 class="text-3xl font-bold mb-3" style="color: var(--color-text); font-family: var(--font-serif);">
+        #{tag}
+      </h1>
+      <p class="text-sm opacity-60" style="color: var(--color-text-muted);">
+        共 {posts.length} 篇 · <a href={url('/tags')} class="hover:underline" style="color: var(--color-accent);">全部标签</a>
+      </p>
+    </header>
+
+    <div>
+      {posts.map(post => <PostCard post={post} />)}
+    </div>
+  </div>
+</BaseLayout>

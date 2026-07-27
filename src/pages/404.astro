@@ -1,0 +1,40 @@
+---
+import { url } from '../lib/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="今晚打烊" description="页面不存在——今晚酒馆打烊了。">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
+
+    <p class="text-7xl font-bold mb-6 opacity-20" style="color: var(--color-text); font-family: var(--font-serif);">
+      404
+    </p>
+
+    <h1 class="text-3xl font-bold mb-4" style="color: var(--color-text); font-family: var(--font-serif);">
+      今晚酒馆打烊了
+    </h1>
+
+    <p class="text-base leading-loose opacity-70 mb-10" style="color: var(--color-text-muted);">
+      你找的这一页不在酒单上。<br />
+      可能是酒喝完了，也可能是掌柜把它收进了后厨。<br />
+      不如回前厅坐坐，看看今晚还有什么。
+    </p>
+
+    <div class="flex items-center justify-center gap-4">
+      <a href={url('/')}
+         class="px-5 py-2.5 text-sm font-medium rounded transition-all hover:opacity-90"
+         style="background: var(--color-accent); color: var(--color-bg);">
+        回到前厅
+      </a>
+      <a href={url('/blog')}
+         class="px-5 py-2.5 text-sm font-medium rounded border transition-all hover:opacity-80"
+         style="border-color: var(--color-border); color: var(--color-text);">
+        看看酒单
+      </a>
+    </div>
+
+    <p class="mt-16 text-xs tracking-[0.25em] uppercase opacity-30" style="color: var(--color-text-muted);">
+      Songcun Tavern · Closed Tonight
+    </p>
+  </div>
+</BaseLayout>

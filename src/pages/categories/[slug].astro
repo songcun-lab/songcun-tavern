@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { sortPosts, filterPublished, CATEGORY_META } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  return Object.entries(CATEGORY_META).map(([name, meta]) => ({
+    params: { slug: meta.slug },
+    props: { categoryName: name, meta },
+  }));
+}
+
+const { categoryName, meta } = Astro.props;
+const posts = sortPosts(
+  filterPublished(await getCollection('posts')).filter(
+    p => p.data.category === categoryName
+  )
+);
+---
+
+<BaseLayout title={categoryName} description={meta.desc}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <header class="mb-10">
+      <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
+        {meta.en}
+      </p>
+      <h1 class="text-3xl font-bold mb-3" style="color: var(--color-text); font-family: var(--font-serif);">
+        {categoryName}
+      </h1>
+      <p class="text-sm leading-relaxed opacity-70 max-w-lg" style="color: var(--color-text-muted);">
+        {meta.desc}
+      </p>
+      <p class="text-xs mt-3 opacity-50" style="color: var(--color-text-muted);">
+        共 {posts.length} 篇
+      </p>
+    </header>
+
+    <div>
+      {posts.map(post => <PostCard post={post} />)}
+    </div>
+
+    {posts.length === 0 && (
+      <p class="text-center py-16 opacity-60" style="color: var(--color-text-muted);">
+        这个角落的酒还在酿。
+      </p>
+    )}
+  </div>
+</BaseLayout>

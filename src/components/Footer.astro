@@ -1,0 +1,50 @@
+---
+import { url } from '../lib/utils';
+
+const year = new Date().getFullYear();
+
+const links = [
+  { href: 'https://github.com/songcun-lab', label: 'GitHub' },
+  { href: 'https://www.youtube.com/@Dr.songcunSong', label: 'YouTube' },
+  { href: 'https://x.com/Mrsong94411422', label: 'X' },
+  { href: 'https://www.xiaohongshu.com/user/profile/5e9e70d80000000001005a60', label: '小红书' },
+  { href: url('/rss.xml'), label: 'RSS' },
+];
+---
+
+<footer class="border-t mt-16" style="border-color: var(--color-border);">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+
+      <div class="text-center sm:text-left">
+        <p class="text-sm font-medium" style="color: var(--color-text); font-family: var(--font-serif);">
+          宋村清酒小酒馆
+        </p>
+        <p class="text-xs mt-1 opacity-60" style="color: var(--color-text-muted);">
+          人到中场，借 AI 重启人生。
+        </p>
+      </div>
+
+      <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2" aria-label="社交链接">
+        {links.map(link => (
+          <a
+            href={link.href}
+            target={link.href.startsWith('http') ? '_blank' : undefined}
+            rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            class="text-xs opacity-60 hover:opacity-100 transition-opacity"
+            style="color: var(--color-text-muted);"
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+
+    <div class="mt-6 pt-4 border-t text-center" style="border-color: var(--color-border);">
+      <p class="text-xs opacity-50" style="color: var(--color-text-muted);">
+        © {year} Songcun Tavern · From Village to AGI ·
+        <span class="opacity-80">酒馆常开，欢迎常来。</span>
+      </p>
+    </div>
+  </div>
+</footer>

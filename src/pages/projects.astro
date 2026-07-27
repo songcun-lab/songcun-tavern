@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    name: 'ai-skill-index',
+    desc: 'Songcun Lab 的总入口与导航中枢：AI Skill、Prompt、工作流的实践索引库，面向非计算机背景的学习者。',
+    tags: ['索引', 'Skill', '方法论'],
+  },
+  {
+    name: 'Personal_AI_Infrastructure',
+    desc: '个人 AI 基础设施的搭建实践：让 AI 从聊天工具变成稳定、可复用、可执行的个人能力放大器。',
+    tags: ['PAI', 'Agent', '基础设施'],
+  },
+  {
+    name: 'notes-ai-journey',
+    desc: '中年非科班转 AI 的学习随笔：按时间记录真实的认知变化与心得，写过程与感受。',
+    tags: ['随笔', '学习记录'],
+  },
+  {
+    name: 'codex-notes',
+    desc: '可复用的 Prompt 库：把反复用得顺手的提示词沉淀下来，遇到同类任务直接取用。',
+    tags: ['Prompt', '工具库'],
+  },
+  {
+    name: 'learn-claude-code',
+    desc: '通过拆解一个极简 Claude Code 式 Agent，理解 AI 编程工具的底层原理。Bash is all you need.',
+    tags: ['Claude Code', 'Agent', '源码学习'],
+  },
+  {
+    name: 'agent-skills',
+    desc: 'Agent Skill 的收集、实验与自建：探索 Skill 作为 AI 能力封装单元的可能性。',
+    tags: ['Skill', 'Agent'],
+  },
+  {
+    name: 'one-person-businesses-methodology-v2.0',
+    desc: '《一人企业方法论》研读与实践：适合做副业、自媒体、数字商品的非技术人群。',
+    tags: ['一人公司', '创业'],
+  },
+  {
+    name: 'Illustrated-Agent-Skills',
+    desc: '《图解 Skill——AI 提效实战指南》：用图解的方式把 Skill 讲明白。',
+    tags: ['Skill', '教程'],
+  },
+];
+---
+
+<BaseLayout title="Projects" description="Songcun Lab（栓柱 AI）的公开项目：AI 学习笔记、Prompt 库、Agent 实验与个人 AI 基础设施。">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <header class="mb-12">
+      <p class="text-[10px] tracking-widest uppercase opacity-40 mb-2" style="color: var(--color-text-muted);">
+        Projects
+      </p>
+      <h1 class="text-3xl font-bold mb-4" style="color: var(--color-text); font-family: var(--font-serif);">
+        Songcun Lab
+      </h1>
+      <p class="text-sm leading-relaxed opacity-70 max-w-lg" style="color: var(--color-text-muted);">
+        我的个人 AI 方法论实验室。不是为了炫技，而是为了记录真实使用 AI 的过程、
+        沉淀可复用的方法、与长期学习者同行。全部开放在
+        <a href="https://github.com/songcun-lab" target="_blank" rel="noopener noreferrer"
+           class="hover:underline" style="color: var(--color-accent);">GitHub</a>。
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {projects.map(p => (
+        <a href={`https://github.com/songcun-lab/${p.name}`} target="_blank" rel="noopener noreferrer"
+           class="group p-5 rounded-lg border transition-all hover:shadow-sm hover:-translate-y-0.5 flex flex-col"
+           style="border-color: var(--color-border); background: var(--color-bg-secondary);">
+          <h2 class="font-mono text-sm font-semibold mb-2 group-hover:underline" style="color: var(--color-accent);">
+            {p.name}
+          </h2>
+          <p class="text-xs leading-relaxed opacity-75 flex-1" style="color: var(--color-text-muted);">
+            {p.desc}
+          </p>
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            {p.tags.map(t => <span class="tag text-[10px]">{t}</span>)}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <p class="mt-12 text-center text-xs opacity-40 italic" style="color: var(--color-text-muted);">
+      This lab grows slowly, but it grows true.
+    </p>
+  </div>
+</BaseLayout>

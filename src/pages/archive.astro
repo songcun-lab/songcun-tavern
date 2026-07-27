@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sortPosts, filterPublished, url } from '../lib/utils';
+
+const posts = sortPosts(filterPublished(await getCollection('posts')));
+
+// group by year
+const byYear: Record<string, typeof posts> = {};
+for (const p of posts) {
+  const y = String(p.data.date.getFullYear());
+  (byYear[y] ??= []).push(p);
+}
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+function md(date: Date) {
+  return `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+---
+
+<BaseLayout title="陈年旧酿" description="宋村清酒小酒馆的文章归档，按年份陈列。">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <header class="mb-10">
+      <h1 class="text-3xl font-bold mb-3" style="color: var(--color-text); font-family: var(--font-serif);">
+        陈年旧酿
+      </h1>
+      <p class="text-sm opacity-60" style="color: var(--color-text-muted);">
+        共 {posts.length} 篇 · 时间越久，越有味道。
+      </p>
+    </header>
+
+    {years.map(year => (
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4 flex items-baseline gap-3"
+            style="color: var(--color-text); font-family: var(--font-serif);">
+          {year}
+          <span class="text-xs font-normal opacity-50" style="color: var(--color-text-muted);">
+            {byYear[year].length} 篇
+          </span>
+        </h2>
+        <ul class="space-y-3 border-l pl-5" style="border-color: var(--color-border);">
+          {byYear[year].map(p => (
+            <li>
+              <a href={url(`/blog/${p.slug}`)} class="group flex items-baseline gap-3">
+                <time class="text-xs shrink-0 tabular-nums opacity-50" style="color: var(--color-text-muted);">
+                  {md(p.data.date)}
+                </time>
+                <span class="text-sm group-hover:underline leading-relaxed" style="color: var(--color-text);">
+                  {p.data.title}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    {posts.length === 0 && (
+      <p class="text-center py-16 opacity-60" style="color: var(--color-text-muted);">
+        酒窖还是空的，先去前面坐坐。
+      </p>
+    )}
+  </div>
+</BaseLayout>

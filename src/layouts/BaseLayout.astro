@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { url } from '../lib/utils';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  article?: boolean;
+  publishedTime?: string;
+}
+
+const {
+  title = '宋村清酒小酒馆',
+  description = '人到中场，借 AI 重启人生。关于 AI、工作、工业、创业，以及人生下半场的一些真实记录。',
+  ogImage = url('/images/og-default.png'),
+  article = false,
+  publishedTime,
+} = Astro.props;
+
+const siteTitle = title === '宋村清酒小酒馆' ? title : `${title} · 宋村清酒小酒馆`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="zh-CN" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO -->
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="宋村清酒小酒馆" />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:locale" content="zh_CN" />
+    {article && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+    <meta name="twitter:site" content="@Mrsong94411422" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+
+    <!-- RSS -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="宋村清酒小酒馆 RSS"
+      href={url('/rss.xml')}
+    />
+
+    <!-- Theme script (prevent flash) -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme') ??
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    </script>
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <!-- Reading progress bar -->
+    <div id="reading-progress" style="width: 0%"></div>
+
+    <Header />
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <!-- Reading progress script -->
+    <script>
+      const bar = document.getElementById('reading-progress');
+      if (bar) {
+        window.addEventListener('scroll', () => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          bar.style.width = `${Math.min(progress, 100)}%`;
+        });
+      }
+    </script>
+  </body>
+</html>
